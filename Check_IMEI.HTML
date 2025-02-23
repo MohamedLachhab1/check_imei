@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check IMEI Your Phone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .whatsapp-btn {
+            background-color: #25d366;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .whatsapp-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        .brand-logos, .country-logos {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .brand-logos img, .country-logos img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            transition: border-color 0.3s ease;
+        }
+        .country-logos img.active {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Check IMEI Your Phone</h1>
+        
+        <!-- أيقونات العلامات التجارية -->
+        <div class="brand-logos">
+            <img src="https://mobileunlocks.com/makes/apple.jpg" alt="Apple">
+            <img src="https://mobileunlocks.com/makes/samsung.jpg" alt="Samsung">
+            <img src="https://mobileunlocks.com/makes/huawei.jpg" alt="Huawei">
+            <img src="https://mobileunlocks.com/makes/lg.jpg" alt="LG">
+            <img src="https://mobileunlocks.com/makes/motorola.jpg" alt="Motorola">
+            <img src="https://mobileunlocks.com/makes/nokia.jpg" alt="Nokia">
+        </div>
+
+        <!-- أيقونات الدول -->
+        <div class="country-logos">
+            <img src="https://flagcdn.com/ma.svg" alt="المغرب" data-value="ma" onclick="selectCountry('ma')">
+            <img src="https://flagcdn.com/fr.svg" alt="فرنسا" data-value="fr" onclick="selectCountry('fr')">
+            <img src="https://flagcdn.com/us.svg" alt="الولايات المتحدة" data-value="us" onclick="selectCountry('us')">
+        </div>
+
+        <!-- اختيار مشغل الشبكة -->
+        <div class="form-group">
+            <label for="carrier">اختر مشغل الشبكة:</label>
+            <select id="carrier" class="form-control">
+                <option value="iam">IAM</option>
+                <option value="inwi">Inwi</option>
+                <option value="orange">Orange</option>
+            </select>
+        </div>
+
+        <!-- إدخال رقم IMEI -->
+        <div class="form-group">
+            <label for="imei">أدخل رقم IMEI:</label>
+            <input type="text" id="imei" placeholder="رقم IMEI (15 رقمًا)" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+        </div>
+
+        <!-- زر التحقق -->
+        <button class="btn" onclick="checkIMEI()">تحقق</button>
+
+        <!-- نتيجة الفحص -->
+        <div class="result" id="result"></div>
+
+        <!-- زر واتساب -->
+        <a href="https://wa.me/212776830133" class="whatsapp-btn" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="واتساب">
+            تواصل معنا عبر واتساب
+        </a>
+    </div>
+
+    <script>
+        let selectedCountry = 'ma'; // القيمة الافتراضية
+
+        function selectCountry(country) {
+            selectedCountry = country;
+            const countryLogos = document.querySelectorAll('.country-logos img');
+            countryLogos.forEach(logo => {
+                if (logo.getAttribute('data-value') === country) {
+                    logo.classList.add('active');
+                } else {
+                    logo.classList.remove('active');
+                }
+            });
+        }
+
+        function checkIMEI() {
+            const imei = document.getElementById('imei').value;
+            const carrier = document.getElementById('carrier').value;
+            const resultDiv = document.getElementById('result');
+
+            // تحقق من أن رقم IMEI يتكون من 15 رقمًا
+            if (imei.length === 15 && /^\d+$/.test(imei)) {
+                let countryName;
+                switch (selectedCountry) {
+                    case 'ma':
+                        countryName = 'المغرب';
+                        break;
+                    case 'fr':
+                        countryName = 'فرنسا';
+                        break;
+                    case 'us':
+                        countryName = 'الولايات المتحدة';
+                        break;
+                    default:
+                        countryName = 'غير معروف';
+                }
+
+                let carrierName;
+                switch (carrier) {
+                    case 'iam':
+                        carrierName = 'IAM';
+                        break;
+                    case 'inwi':
+                        carrierName = 'Inwi';
+                        break;
+                    case 'orange':
+                        carrierName = 'Orange';
+                        break;
+                    default:
+                        carrierName = 'غير معروف';
+                }
+
+                resultDiv.innerHTML = `
+                    <p>رقم IMEI: <strong>${imei}</strong></p>
+                    <p>البلد: <strong>${countryName}</strong></p>
+                    <p>مشغل الشبكة: <strong>${carrierName}</strong></p>
+                    <p>نوع الجهاز: <strong>iPhone 16</strong></p>
+                    <p>الحالة: <strong>نظيف (Clean)</strong></p>
+                    <p>عدد الشحنات: <strong>90 مرة</strong></p>
+                    <p>نظام التشغيل: <strong>iOS 18</strong></p>
+                    <p>اسم الهاتف: <strong>iPhone 16 Pro Max</strong></p>
+                    <p>يمكن فتح هذا الجهاز بشكل رسمي مقابل <strong>800 درهم</strong> في 30 دقيقة.</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `<p style="color: red;">رقم IMEI غير صحيح. يرجى إدخال رقم IMEI صالح (15 رقمًا).</p>`;
+            }
+        }
+
+        // تحديد المغرب كقيمة افتراضية عند التحميل
+        window.onload = () => selectCountry('ma');
+    </script>
+</body>
+</html>
